@@ -5,6 +5,12 @@ setup() {
     # Global mock the echo function, capture all the parameters and save them to a variable last_echo
     last_echo="$*"
   }
+  # Reset all environment variables
+  unset FOOBAR_NAME
+  unset FOO_OPTIONS
+}
+teardown() {
+  unset echo
 }
 
 test_should_do_foo() {

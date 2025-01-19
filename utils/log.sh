@@ -12,10 +12,10 @@ log::success() {
 
 log::warn() {
   local message=$1
-  local yellow="\033[33m"
+  local yellow="\033[0;33m"
   local default="\033[0m"
 
-  printf "${yellow}🔶 [WARNING] ${message:-} ${default}\n"
+  printf "${yellow}🔶 [WARN] ${message:-} ${default}\n"
 }
 
 log::info() {

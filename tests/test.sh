@@ -6,6 +6,9 @@ run_tests_in_file() {
   setup () {
     return 0
   }
+  teardown () {
+    return 0
+  }
 
   source $1
 
@@ -13,16 +16,12 @@ run_tests_in_file() {
   for test in $(compgen -A function | grep -E '^test_'); do
     tests_run=$((tests_run+1))
 
-    # Reset the environment between tests
-    setup
-
-    # do not exit when commands return non-zero, we want the tests to catch this and handle it
-    set +e
     log::info "Running  $test"
 
-    # Reset all environment variables
-    unset FOOBAR_NAME
-    unset FOO_OPTIONS
+    # Reset the environment between tests
+    setup
+    # do not exit when commands return non-zero, we want the tests to catch this and handle it
+    set +e
 
     # Run the test
     $test
@@ -35,6 +34,9 @@ run_tests_in_file() {
       log::error "❌ Failed"
       tests_failed=$((tests_failed+1))
     fi
+
+    unset $test
+    teardown
   done
 }
 
