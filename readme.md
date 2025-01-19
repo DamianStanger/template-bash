@@ -6,6 +6,9 @@ Which leads to the second reason, i wanted to find out how easy it would be to p
 # Running the script
 Just run `./main.sh` passing any flags that you need, these will be passed on to the main.sh in the source folder. All the code runs from the toplevel directory, not from `./source/`.
 
+## But its broken
+Yes i know the function `do_the_foo` does not exist, i will replace this with something more real, maybe just check your external ip address or something basic, i will have a think.
+
 # Running the tests
 Just run `./test.sh` this will dynamically scan all the files matching `test_*` inside the tests folder. At the moment sub folders will not be run although i dont think it would be hard to change that.
 
