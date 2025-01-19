@@ -9,22 +9,17 @@ setup() {
   unset FOOBAR_NAME
   unset FOO_OPTIONS
 }
+
 teardown() {
   unset -f echo
+  source "./utils/log.sh" # restore the real log.sh
 }
 
 test_should_do_foo() {
   # Mocks
   do_the_foo() {
-    if [[ "$1" != "aaa bbb" ]]; then
-      log::warn "Test failed - expected 'aaa bbb' but got '$1'"
-      return 1
-    fi
-
-    if [[ "$2" != "-a -b" ]]; then
-      log::warn "Test failed - expected '-a -b' but got '$2'"
-      return 1
-    fi
+    assert_expected_vs_actual "aaa bbb" "$1" &&
+    assert_expected_vs_actual "-a -b" "$2"
   }
 
   # Given
@@ -51,8 +46,6 @@ test_should_log_script_variables() {
 
   # When
   log_script_variables
-  unset -f log::info
-  teardown
 
   # Then
   expected=" FOOBAR_NAME: aaa bbb FOO_OPTIONS: -a -b"
@@ -70,14 +63,14 @@ test_should_exit_when_check_environment_variables_fails() {
   # When
   check_environment_variables
 
-  # Then
-  unset -f exit # remove mock
+  # Mocks
+  unset -f exit
 
+  # Then
   if [[ $exit_called -eq 0 ]]; then
     log::warn "Test failed - did not exit"
     return 1
   fi
-
 }
 
 test_should_not_exit_when_check_environment_variables_passes() {
@@ -91,7 +84,6 @@ test_should_not_exit_when_check_environment_variables_passes() {
 test_should_echo_help_text_when_calling_usage() {
   # When
   usage
-  teardown
 
   # Then
   expected="usage: ./test.sh options

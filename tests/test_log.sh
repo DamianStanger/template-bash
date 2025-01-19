@@ -17,7 +17,6 @@ test_log_blank_should_printf() {
 
   # When
   log::blank
-  teardown
 
   # Then
   assert_expected_vs_actual "$expected" "$last_printf"
@@ -31,7 +30,6 @@ test_log_error_should_printf() {
 
   # When
   log::error "$message1" "$message2"
-  teardown
 
   # Then
   assert_expected_vs_actual "$expected" "$last_printf"
@@ -44,7 +42,6 @@ test_log_warn_should_printf() {
 
   # When
   log::warn "$message"
-  teardown
 
   # Then
   assert_expected_vs_actual "$expected" "$last_printf"
@@ -57,7 +54,6 @@ test_log_info_should_printf() {
 
   # When
   log::info "$message"
-  teardown
 
   # Then
   assert_expected_vs_actual "$expected" "$last_printf"
@@ -70,7 +66,6 @@ test_log_success_should_printf() {
 
   # When
   log::success "$message"
-  teardown
 
   # Then
   assert_expected_vs_actual "$expected" "$last_printf"
