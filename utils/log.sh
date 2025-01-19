@@ -1,3 +1,7 @@
+log::blank() {
+  printf "\n"
+}
+
 log::success() {
   local message=$1
   local green="\033[0;32m"

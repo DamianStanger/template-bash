@@ -1,10 +1,11 @@
-source "main.sh"
-last_echo=""
-echo(){
-  # Global mock the echo function, capture all the parameters and save them to a variable last_echo
-  last_echo="$*"
+setup() {
+  source "./source/main.sh"
+  last_echo=""
+  echo(){
+    # Global mock the echo function, capture all the parameters and save them to a variable last_echo
+    last_echo="$*"
+  }
 }
-
 
 test_should_do_foo() {
   # Mocks
@@ -90,7 +91,7 @@ test_should_echo_help_text_when_calling_usage() {
   usage
 
   # Then
-  expected="usage: ./tests/test.sh options
+  expected="usage: ./test.sh options
 
   This script is for ... well its a template ...
   The following environment variables should be set before running this script:

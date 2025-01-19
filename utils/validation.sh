@@ -1,4 +1,4 @@
-source "log.sh"
+source "./utils/log.sh"
 
 validation::check_variable_is_set() {
   local variable_name=$1

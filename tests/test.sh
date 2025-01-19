@@ -1,16 +1,21 @@
 #!/bin/bash
-pwd
-source "log.sh"
+source "./utils/log.sh"
 
 run_tests_in_file() {
+  #remove the function setup if it exists
+  setup () {
+    return 0
+  }
+
   source $1
 
   #run all functions that start with test_
   for test in $(compgen -A function | grep -E '^test_'); do
     tests_run=$((tests_run+1))
+
     # Reset the environment between tests
-    #last_echo=""
-    #source "main.sh"
+    setup
+
     # do not exit when commands return non-zero, we want the tests to catch this and handle it
     set +e
     log::info "Running  $test"
@@ -36,7 +41,8 @@ run_tests_in_file() {
 run_all_test_files() {
   for file in $(find . -name "test_*.sh"); do
     test_files=$((test_files+1))
-    log::warn "Running tests in $file"
+    log::blank
+    log::info "Running tests in $file"
     run_tests_in_file $file
   done
 }
