@@ -54,14 +54,12 @@ test_should_log_script_variables() {
 
   # When
   log_script_variables
+  teardown
 
   # Then
   expected=" FOOBAR_NAME: aaa bbb FOO_OPTIONS: -a -b"
 
-  if [[ "$last_log" != "$expected" ]]; then
-    log::warn "Test failed\nExpected: \n'$expected'\nActual value was: \n'$last_log'"
-    return 1
-  fi
+  assert_expected_vs_actual "$expected" "$last_log"
 }
 
 test_should_exit_when_check_environment_variables_fails() {
@@ -95,6 +93,7 @@ test_should_not_exit_when_check_environment_variables_passes() {
 test_should_echo_help_text_when_calling_usage() {
   # When
   usage
+  teardown
 
   # Then
   expected="usage: ./test.sh options
@@ -108,10 +107,7 @@ test_should_echo_help_text_when_calling_usage() {
      -f, --foobar-name     name of the foobar option
 "
 
-  if [[ "$last_echo" != "$expected" ]]; then
-    log::warn "Test failed\nExpected: \n'$expected'\nActual value was: \n'$last_echo'"
-    return 1
-  fi
+  assert_expected_vs_actual "$expected" "$last_echo"
 }
 
 test_should_exit_0_when_passed_help_flag_h() {

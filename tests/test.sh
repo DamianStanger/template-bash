@@ -1,6 +1,14 @@
 #!/bin/bash
 source "./utils/log.sh"
 
+assert_expected_vs_actual(){
+  if [[ "$1" != "$2" ]]; then
+    log::warn "Test failed: diff expected vs actual"
+    diff <(echo "$1") <(echo "$2")
+    return 1
+  fi
+}
+
 run_tests_in_file() {
   #remove the function setup if it exists
   setup () {
@@ -48,7 +56,6 @@ run_all_test_files() {
     run_tests_in_file $file
   done
 }
-
 
 main() {
   local start_time=$(date +%s)
