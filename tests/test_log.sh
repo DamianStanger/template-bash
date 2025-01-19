@@ -8,7 +8,7 @@ setup() {
 }
 
 teardown() {
-  unset printf
+  unset -f printf
 }
 
 test_log_blank_should_printf() {

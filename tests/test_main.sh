@@ -10,7 +10,7 @@ setup() {
   unset FOO_OPTIONS
 }
 teardown() {
-  unset echo
+  unset -f echo
 }
 
 test_should_do_foo() {
@@ -35,10 +35,7 @@ test_should_do_foo() {
   do_foo
 
   # Then
-  if [[ $? -ne 0 ]]; then
-    log::warn "Test failed - returned non-zero"
-    return 1
-  fi
+  assert_error_code_success $?
 }
 
 test_should_log_script_variables() {
@@ -58,7 +55,6 @@ test_should_log_script_variables() {
 
   # Then
   expected=" FOOBAR_NAME: aaa bbb FOO_OPTIONS: -a -b"
-
   assert_expected_vs_actual "$expected" "$last_log"
 }
 
@@ -75,6 +71,7 @@ test_should_exit_when_check_environment_variables_fails() {
 
   # Then
   unset -f exit # remove mock
+
   if [[ $exit_called -eq 0 ]]; then
     log::warn "Test failed - did not exit"
     return 1
@@ -121,10 +118,7 @@ test_should_exit_0_when_passed_help_flag_h() {
   )
 
   # Then
-  if [[ $? -ne 0 ]]; then
-    log::warn "Test failed - returned non-zero"
-    return 1
-  fi
+  assert_error_code_success $?
 }
 
 test_should_exit_0_when_passed_help_flag_help() {
@@ -138,10 +132,7 @@ test_should_exit_0_when_passed_help_flag_help() {
   )
 
   # Then
-  if [[ $? -ne 0 ]]; then
-    log::warn "Test failed - returned non-zero"
-    return 1
-  fi
+  assert_error_code_success $?
 }
 
 test_should_exit_1_when_passed_random_flag() {
@@ -155,10 +146,7 @@ test_should_exit_1_when_passed_random_flag() {
   )
 
   # Then
-  if [[ $? -ne 1 ]]; then
-    log::warn "Test failed - returned zero result"
-    return 1
-  fi
+  assert_error_code_failure $?
 }
 
 test_should_exit_1_when_foobar_name_is_missing() {
@@ -172,10 +160,7 @@ test_should_exit_1_when_foobar_name_is_missing() {
   )
 
   # Then
-  if [[ $? -ne 1 ]]; then
-    log::warn "Test failed - returned zero result"
-    return 1
-  fi
+  assert_error_code_failure $?
 }
 
 test_should_not_exit_when_foobar_name_is_present() {
@@ -183,10 +168,7 @@ test_should_not_exit_when_foobar_name_is_present() {
   process_parameters "--foobar-name" "aaa bbb"
 
   # Then
-  if [[ $? -ne 0 ]]; then
-    log::warn "Test failed - returned non-zero result"
-    return 1
-  fi
+  assert_error_code_success $?
 }
 
 test_should_not_exit_when_foobar_name_is_present_passed_in_shorthand() {
@@ -194,8 +176,5 @@ test_should_not_exit_when_foobar_name_is_present_passed_in_shorthand() {
   process_parameters "-f" "name"
 
   # Then
-  if [[ $? -ne 0 ]]; then
-    log::warn "Test failed - returned non-zero result"
-    return 1
-  fi
+  assert_error_code_success $?
 }
