@@ -11,6 +11,14 @@ teardown() {
   unset printf
 }
 
+check_expected_vs_actual(){
+  if [[ "$last_printf" != "$expected" ]]; then
+    log::warn "Test failed: diff expected vs actual"
+    diff <(echo "$expected") <(echo "$last_printf")
+    return 1
+  fi
+}
+
 test_log_blank_should_printf() {
   # Given
   local expected='\n'
@@ -20,11 +28,7 @@ test_log_blank_should_printf() {
   teardown
 
   # Then
-  if [[ "$last_printf" != "$expected" ]]; then
-    log::warn "Test failed: diff expected vs actual"
-    diff <(echo "$expected") <(echo "$last_printf")
-    return 1
-  fi
+  check_expected_vs_actual
 }
 
 test_log_error_should_printf() {
@@ -38,11 +42,7 @@ test_log_error_should_printf() {
   teardown
 
   # Then
-  if [[ "$last_printf" != "$expected" ]]; then
-    log::warn "Test failed: diff expected vs actual"
-    diff <(echo "$expected") <(echo "$last_printf")
-    return 1
-  fi
+  check_expected_vs_actual
 }
 
 test_log_warn_should_printf() {
@@ -55,11 +55,7 @@ test_log_warn_should_printf() {
   teardown
 
   # Then
-  if [[ "$last_printf" != "$expected" ]]; then
-    log::warn "Test failed: diff expected vs actual"
-    diff <(echo "$expected") <(echo "$last_printf")
-    return 1
-  fi
+  check_expected_vs_actual
 }
 
 test_log_info_should_printf() {
@@ -72,11 +68,7 @@ test_log_info_should_printf() {
   teardown
 
   # Then
-  if [[ "$last_printf" != "$expected" ]]; then
-    log::warn "Test failed: diff expected vs actual"
-    diff <(echo "$expected") <(echo "$last_printf")
-    return 1
-  fi
+  check_expected_vs_actual
 }
 
 test_log_success_should_printf() {
@@ -89,9 +81,5 @@ test_log_success_should_printf() {
   teardown
 
   # Then
-  if [[ "$last_printf" != "$expected" ]]; then
-    log::warn "Test failed: diff expected vs actual"
-    diff <(echo "$expected") <(echo "$last_printf")
-    return 1
-  fi
+  check_expected_vs_actual
 }
