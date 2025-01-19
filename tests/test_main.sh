@@ -51,6 +51,7 @@ test_should_log_script_variables() {
 
   # When
   log_script_variables
+  unset -f log::info
   teardown
 
   # Then
